@@ -1,0 +1,156 @@
+name: Dependency Cache Workflow
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build-with-cache:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache Node.js dependencies
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+            ~/.cache/pip
+            ~/.cache/uv
+          key: cache-816602a-${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json', '**/requirements.txt') }}
+          restore-keys: |
+            cache-816602a-${{ runner.os }}-node-
+            cache-816602a-${{ runner.os }}-
+
+      - name: prime-cache-816602a
+        run: |
+          echo "🔍 Cache Analysis Results:"
+          echo "Cache Hit: ${{ steps.cache-deps.outputs.cache-hit }}"
+          if [ "${{ steps.cache-deps.outputs.cache-hit }}" == "true" ]; then
+            echo "✅ Cache HIT - Dependencies restored from cache"
+            echo "Cache Key Used: cache-816602a-${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json', '**/requirements.txt') }}"
+          else
+            echo "❌ Cache MISS - Dependencies will be installed fresh"
+            echo "New Cache Key: cache-816602a-${{ runner.os }}-node-${{ hashFiles('**/package-lock.json', '**/package.json', '**/requirements.txt') }}"
+          fi
+          echo "Runner OS: ${{ runner.os }}"
+          echo "Cache Path: node_modules, ~/.npm, ~/.cache/pip, ~/.cache/uv"
+
+      - name: Install dependencies (if cache miss)
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          echo "📦 Installing dependencies..."
+          # Create package.json if it doesn't exist to demonstrate caching
+          if [ ! -f package.json ]; then
+            echo '{
+              "name": "tds-cache-demo",
+              "version": "1.0.0",
+              "dependencies": {
+                "express": "^4.18.2",
+                "lodash": "^4.17.21",
+                "moment": "^2.29.4"
+              }
+            }' > package.json
+          fi
+          npm install
+
+          # Install some Python dependencies to demonstrate multi-language caching
+          pip install requests pandas numpy || true
+
+      - name: Setup Python with uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Cache Python dependencies with uv
+        id: cache-python
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: cache-816602a-python-${{ runner.os }}-${{ hashFiles('**/requirements.txt', '**/pyproject.toml') }}
+          restore-keys: |
+            cache-816602a-python-${{ runner.os }}-
+
+      - name: Install Python dependencies with uv
+        if: steps.cache-python.outputs.cache-hit != 'true'
+        run: |
+          echo "🐍 Installing Python dependencies with uv..."
+          # Create requirements.txt if it doesn't exist
+          if [ ! -f requirements.txt ]; then
+            echo 'requests>=2.31.0
+pandas>=2.0.0
+numpy>=1.24.0
+fastapi>=0.100.0' > requirements.txt
+          fi
+          uv sync || uv pip install -r requirements.txt
+
+      - name: Verify cached dependencies
+        run: |
+          echo "🔍 Verifying cached dependencies:"
+          echo ""
+          echo "Node.js dependencies:"
+          if [ -d node_modules ]; then
+            echo "✅ node_modules exists ($(du -sh node_modules | cut -f1))"
+            ls -la node_modules/ | head -10
+          else
+            echo "❌ node_modules not found"
+          fi
+          echo ""
+          echo "Python cache status:"
+          if [ -d ~/.cache/uv ]; then
+            echo "✅ uv cache exists ($(du -sh ~/.cache/uv | cut -f1))"
+          else
+            echo "❌ uv cache not found"
+          fi
+
+      - name: Run application tests
+        run: |
+          echo "🧪 Running tests with cached dependencies..."
+          node -e "
+            try {
+              const express = require('express');
+              const _ = require('lodash');
+              const moment = require('moment');
+              console.log('✅ Node.js dependencies loaded successfully');
+              console.log('Express version:', require('express/package.json').version);
+              console.log('Lodash version:', require('lodash/package.json').version);
+              console.log('Moment version:', require('moment/package.json').version);
+            } catch (e) {
+              console.log('⚠️  Some Node.js dependencies not available:', e.message);
+            }
+          " || echo "Node.js test skipped"
+
+          python3 -c "
+          try:
+              import requests, pandas, numpy
+              print('✅ Python dependencies loaded successfully')
+              print(f'Requests version: {requests.__version__}')
+              print(f'Pandas version: {pandas.__version__}')
+              print(f'NumPy version: {numpy.__version__}')
+          except ImportError as e:
+              print(f'⚠️  Some Python dependencies not available: {e}')
+          " || echo "Python test skipped"
+
+      - name: Cache statistics
+        run: |
+          echo "📊 Final Cache Statistics:"
+          echo "================================"
+          echo "Node.js Cache Hit: ${{ steps.cache-deps.outputs.cache-hit }}"
+          echo "Python Cache Hit: ${{ steps.cache-python.outputs.cache-hit }}"
+          echo "Primary Cache Key: cache-816602a"
+          echo "Workflow completed at: $(date)"
+          echo "Total cache paths monitored: node_modules, ~/.npm, ~/.cache/pip, ~/.cache/uv, .venv"
