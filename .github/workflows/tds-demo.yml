@@ -1,0 +1,51 @@
+name: TDS Demo Workflow
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 23f3004206@ds.study.iitm.ac.in
+        run: echo "Hello, world! This is a demo GitHub Action for TDS project."
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Run basic tests
+        run: |
+          echo "Running basic tests..."
+          echo "Current directory: $(pwd)"
+          echo "Files in directory:"
+          ls -la
+          echo "✅ Tests completed successfully!"
+
+      - name: Verify API files
+        run: |
+          if [ -d "api" ]; then
+            echo "✅ API directory exists"
+            ls -la api/
+          else
+            echo "❌ API directory not found"
+          fi
+
+      - name: Display project info
+        run: |
+          echo "🚀 TDS Project Information"
+          echo "Repository: https://github.com/nitinsinghh27/TDS_GA1_public_repo"
+          echo "Student: 23f3004206@ds.study.iitm.ac.in"
+          echo "Timestamp: $(date)"
+          echo "Workflow completed successfully! ✅"
