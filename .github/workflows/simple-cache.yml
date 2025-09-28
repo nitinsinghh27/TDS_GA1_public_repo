@@ -1,0 +1,30 @@
+name: Simple Cache Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  test-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache test
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: cache-816602a
+
+      - name: prime-cache-816602a
+        run: echo "Cache hit result is ${{ steps.cache.outputs.cache-hit }}"
+
+      - name: Show cache details
+        run: |
+          echo "=== Cache Status ==="
+          echo "Cache hit: ${{ steps.cache.outputs.cache-hit }}"
+          echo "Cache key: cache-816602a"
+          echo "Step completed successfully"
