@@ -1,0 +1,71 @@
+name: Cache Demo Workflow
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  cache-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.npm
+          key: cache-816602a-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json') }}
+          restore-keys: |
+            cache-816602a-${{ runner.os }}-
+
+      - name: prime-cache-816602a
+        run: |
+          echo "Cache hit result: ${{ steps.cache.outputs.cache-hit }}"
+          if [ "${{ steps.cache.outputs.cache-hit }}" == "true" ]; then
+            echo "✅ CACHE HIT - Dependencies restored from cache"
+          else
+            echo "❌ CACHE MISS - Will install dependencies"
+          fi
+          echo "Cache key: cache-816602a-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json') }}"
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          echo "Installing Node.js dependencies..."
+          npm install
+
+      - name: Verify installation
+        run: |
+          echo "Verifying cached dependencies:"
+          if [ -d "node_modules" ]; then
+            echo "✅ node_modules directory exists"
+            echo "Size: $(du -sh node_modules | cut -f1)"
+            echo "Package count: $(ls node_modules | wc -l)"
+          else
+            echo "❌ node_modules not found"
+          fi
+
+      - name: Test dependencies
+        run: |
+          echo "Testing cached dependencies:"
+          node -e "
+            try {
+              console.log('Express version:', require('express/package.json').version);
+              console.log('✅ Dependencies working correctly');
+            } catch (e) {
+              console.log('⚠️ Dependencies not available:', e.message);
+            }
+          " || echo "Test completed"
