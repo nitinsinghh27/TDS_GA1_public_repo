@@ -33,13 +33,15 @@ jobs:
 
       - name: prime-cache-816602a
         run: |
+          echo "=== prime-cache-816602a step executing ==="
           echo "Cache hit result: ${{ steps.cache.outputs.cache-hit }}"
           if [ "${{ steps.cache.outputs.cache-hit }}" == "true" ]; then
             echo "✅ CACHE HIT - Dependencies restored from cache"
           else
             echo "❌ CACHE MISS - Will install dependencies"
           fi
-          echo "Cache key: cache-816602a-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json') }}"
+          echo "Cache key used: cache-816602a-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json') }}"
+          echo "=== prime-cache-816602a step completed ==="
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
