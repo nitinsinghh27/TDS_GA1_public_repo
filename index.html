@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TDS Project Showcase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .project-title {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .tech-tag {
+            background: #e3f2fd;
+            color: #1565c0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        .contact {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+        code {
+            background: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 TDS Project Showcase</h1>
+        <p>Data Science and Engineering Projects</p>
+        <p><!--email_off-->23f3004206@ds.study.iitm.ac.in<!--/email_off--></p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number">5+</div>
+            <div>Projects Completed</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div>Compression Ratio</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">400</div>
+            <div>Bytes Target</div>
+        </div>
+    </div>
+
+    <div class="project-grid">
+        <div class="project-card">
+            <h3 class="project-title">🏗️ Project RRf-XZ7cql4 Deployment Architecture</h3>
+            <p>Comprehensive deployment architecture documentation covering the transition of data products from staging to production environments.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">Markdown</span>
+                <span class="tech-tag">Mermaid</span>
+                <span class="tech-tag">DevOps</span>
+                <span class="tech-tag">Architecture</span>
+            </div>
+            <ul>
+                <li>Edge cache layer (edge-f1qd)</li>
+                <li>API tier (api-gydh6)</li>
+                <li>Background workers (worker-cjpbn)</li>
+                <li>Deployment automation with <code>uv deploy rrf-xz7cql4</code></li>
+            </ul>
+        </div>
+
+        <div class="project-card">
+            <h3 class="project-title">🖼️ Advanced Image Compression</h3>
+            <p>Achieved 95.2% file size reduction on PNG images while maintaining visual quality, demonstrating advanced optimization techniques.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">PNG Optimization</span>
+                <span class="tech-tag">pngquant</span>
+                <span class="tech-tag">optipng</span>
+                <span class="tech-tag">macOS sips</span>
+            </div>
+            <ul>
+                <li>Original: 7,145 bytes → Compressed: 340 bytes</li>
+                <li>Maintained 500×500 pixel dimensions</li>
+                <li>4-color palette optimization</li>
+                <li>Lossless compression techniques</li>
+            </ul>
+        </div>
+
+        <div class="project-card">
+            <h3 class="project-title">📊 Statistical Analysis</h3>
+            <p>Performed sample variance calculations on production measurement data using Python's statistics library.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">Statistics</span>
+                <span class="tech-tag">JSON</span>
+                <span class="tech-tag">Data Analysis</span>
+            </div>
+            <ul>
+                <li>1000 measurements processed</li>
+                <li>Sample variance: 131.97</li>
+                <li>Bessel's correction (N-1 denominator)</li>
+                <li>JSON data parsing and analysis</li>
+            </ul>
+        </div>
+
+        <div class="project-card">
+            <h3 class="project-title">📁 File Operations & Text Processing</h3>
+            <p>Automated file manipulation and text replacement across multiple directories with precision digit transformation.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">Bash</span>
+                <span class="tech-tag">sed</span>
+                <span class="tech-tag">tr</span>
+                <span class="tech-tag">grep</span>
+            </div>
+            <ul>
+                <li>Bulk file organization and movement</li>
+                <li>Pattern-based text replacement</li>
+                <li>Digit transformation (1→2, 2→3, ..., 9→0)</li>
+                <li>Case-insensitive string replacement</li>
+            </ul>
+        </div>
+
+        <div class="project-card">
+            <h3 class="project-title">🔍 Data Comparison & Analysis</h3>
+            <p>Performed precise file comparison operations to identify differences between large datasets.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">diff</span>
+                <span class="tech-tag">grep</span>
+                <span class="tech-tag">Data Comparison</span>
+            </div>
+            <ul>
+                <li>Compared nearly identical files (a.txt vs b.txt)</li>
+                <li>Identified 21 different lines</li>
+                <li>Efficient line-by-line analysis</li>
+                <li>Large file processing capabilities</li>
+            </ul>
+        </div>
+
+        <div class="project-card">
+            <h3 class="project-title">💻 Python Development Environment</h3>
+            <p>Set up comprehensive Python development environment with image processing capabilities using PIL and pathlib.</p>
+            <div class="tech-stack">
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">PIL/Pillow</span>
+                <span class="tech-tag">Jupyter</span>
+                <span class="tech-tag">WebP</span>
+            </div>
+            <ul>
+                <li>Image format conversion (PNG → WebP)</li>
+                <li>Quality optimization algorithms</li>
+                <li>Jupyter notebook development</li>
+                <li>Path-based file handling</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="contact">
+        <h3>📧 Contact Information</h3>
+        <p>For collaboration opportunities or project inquiries:</p>
+        <p><strong>Email:</strong> <!--email_off-->23f3004206@ds.study.iitm.ac.in<!--/email_off--></p>
+        <p><em>IIT Madras - Data Science Program</em></p>
+    </div>
+
+    <footer style="text-align: center; margin-top: 3rem; padding: 2rem; color: #666;">
+        <p>Built with ❤️ for the TDS Program | IIT Madras</p>
+        <p><small>Last updated: <span id="lastUpdated"></span></small></p>
+    </footer>
+
+    <script>
+        // Add current date
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString();
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
