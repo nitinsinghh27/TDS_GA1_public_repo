@@ -1,0 +1,43 @@
+{
+    "name": "ga2-10b7c2",
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.11"
+        }
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "astral-sh.uv",
+                "ms-python.python"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/python/current/bin/python",
+                "python.terminal.activateEnvironment": true
+            }
+        }
+    },
+
+    "postCreateCommand": "uv pip install fastapi",
+
+    "remoteUser": "codespace",
+
+    "forwardPorts": [8000, 7018],
+    "portsAttributes": {
+        "8000": {
+            "label": "FastAPI App",
+            "onAutoForward": "notify"
+        },
+        "7018": {
+            "label": "Deployment API",
+            "onAutoForward": "notify"
+        }
+    },
+
+    "mounts": [
+        "source=codespace-uv-cache,target=/home/codespace/.cache/uv,type=volume"
+    ]
+}
